@@ -209,8 +209,8 @@ export function CareerRecommendations({ recommendations }: CareerRecommendations
                 </div>
               </div>
               <div className="w-20 text-right">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(career.difficulty)}`}>
-                  {getDifficultyLabel(career.difficulty)}
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor((career as any).difficulty || 'moderate')}`}>
+                  {getDifficultyLabel((career as any).difficulty || 'moderate')}
                 </span>
               </div>
             </div>
@@ -230,13 +230,13 @@ export function CareerRecommendations({ recommendations }: CareerRecommendations
             <h3 className="font-medium text-gray-900 mb-3">🎯 즉시 시작 가능한 진로</h3>
             <div className="space-y-2">
               {recommendations
-                .filter(career => career.difficulty === 'easy')
+                .filter(career => (career as any).difficulty === 'easy')
                 .slice(0, 2)
                 .map((career, index) => (
                   <div key={index} className="flex items-center p-2 bg-green-50 rounded-lg">
                     <span className="text-green-600 mr-2">✓</span>
                     <span className="text-sm text-gray-700">{career.title}</span>
-                    <span className="ml-auto text-xs text-green-600">({career.timeframe})</span>
+                    <span className="ml-auto text-xs text-green-600">({(career as any).timeframe || '정보 없음'})</span>
                   </div>
                 ))}
             </div>

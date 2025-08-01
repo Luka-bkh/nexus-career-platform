@@ -277,7 +277,7 @@ export function SimulationScene({ sessionData, scenarioDetail, onSessionEnd }: S
             </div>
             
             <div className="flex items-center space-x-4">
-              <CreditBalance compact />
+              <CreditBalance />
               
               {gameState && (
                 <div className="flex items-center space-x-4 text-white text-sm">

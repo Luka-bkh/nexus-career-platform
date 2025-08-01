@@ -125,24 +125,24 @@ export function CareerRecommendations({ recommendations }: CareerRecommendations
               </h3>
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
                 <p className="text-gray-700 leading-relaxed">
-                  {recommendations[selectedCareer].reasoning}
+                  {(recommendations[selectedCareer] as any).reasoning || recommendations[selectedCareer].description || '진로 정보가 없습니다.'}
                 </p>
               </div>
               
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div className="text-center p-3 bg-gray-50 rounded-lg">
                   <div className="text-lg font-bold text-gray-900 mb-1">
-                    {recommendations[selectedCareer].timeframe}
+                    {(recommendations[selectedCareer] as any).timeframe || '시간 정보 없음'}
                   </div>
                   <div className="text-sm text-gray-600">예상 준비 기간</div>
                 </div>
                 <div className="text-center p-3 bg-gray-50 rounded-lg">
                   <div className={`text-lg font-bold mb-1 ${
-                    recommendations[selectedCareer].difficulty === 'easy' ? 'text-green-600' :
-                    recommendations[selectedCareer].difficulty === 'moderate' ? 'text-yellow-600' :
+                    (recommendations[selectedCareer] as any).difficulty === 'easy' ? 'text-green-600' :
+                    (recommendations[selectedCareer] as any).difficulty === 'moderate' ? 'text-yellow-600' :
                     'text-red-600'
                   }`}>
-                    {getDifficultyLabel(recommendations[selectedCareer].difficulty)}
+                    {getDifficultyLabel((recommendations[selectedCareer] as any).difficulty || 'moderate')}
                   </div>
                   <div className="text-sm text-gray-600">진입 난이도</div>
                 </div>
@@ -156,7 +156,7 @@ export function CareerRecommendations({ recommendations }: CareerRecommendations
                 진로 로드맵
               </h3>
               <div className="space-y-3">
-                {recommendations[selectedCareer].pathway.map((step, index) => (
+                {((recommendations[selectedCareer] as any).pathway || ['진로 경로 정보가 없습니다.']).map((step: string, index: number) => (
                   <div key={index} className="flex items-start">
                     <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
                       {index + 1}
@@ -165,7 +165,7 @@ export function CareerRecommendations({ recommendations }: CareerRecommendations
                       <div className="bg-white border border-gray-200 rounded-lg p-3">
                         <p className="text-gray-700">{step}</p>
                       </div>
-                      {index < recommendations[selectedCareer].pathway.length - 1 && (
+                      {index < ((recommendations[selectedCareer] as any).pathway || []).length - 1 && (
                         <div className="w-px h-4 bg-gray-300 ml-4 mt-2"></div>
                       )}
                     </div>

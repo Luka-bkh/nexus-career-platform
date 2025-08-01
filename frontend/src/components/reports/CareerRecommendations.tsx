@@ -83,14 +83,14 @@ export function CareerRecommendations({ recommendations }: CareerRecommendations
               </div>
               
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">{career.timeframe}</span>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(career.difficulty)}`}>
-                  {getDifficultyLabel(career.difficulty)}
+                <span className="text-gray-600">{(career as any).timeframe || '시간 정보 없음'}</span>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor((career as any).difficulty || 'moderate')}`}>
+                  {getDifficultyLabel((career as any).difficulty || 'moderate')}
                 </span>
               </div>
               
               <p className="text-gray-600 text-sm line-clamp-3">
-                {career.reasoning}
+                {(career as any).reasoning || career.description || '진로 정보가 없습니다.'}
               </p>
               
               {selectedCareer === index && (

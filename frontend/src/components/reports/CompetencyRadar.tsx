@@ -145,7 +145,7 @@ export function CompetencyRadar({ competencies }: CompetencyRadarProps) {
                   dominantBaseline="middle"
                   className="text-sm font-medium fill-gray-700"
                 >
-                  {competencyLabels[key] || key}
+                  {(competencyLabels as any)[key] || key}
                 </text>
               );
             })}
@@ -169,7 +169,7 @@ export function CompetencyRadar({ competencies }: CompetencyRadarProps) {
               <div key={key} className="p-4 border border-gray-200 rounded-lg">
                 <div className="flex justify-between items-center mb-2">
                   <h4 className="font-medium text-gray-900">
-                    {competencyLabels[key] || key.replace('_', ' ')}
+                    {(competencyLabels as any)[key] || key.replace('_', ' ')}
                   </h4>
                   <div className="flex items-center space-x-2">
                     <span className="text-lg font-bold text-gray-900">
@@ -268,7 +268,7 @@ export function CompetencyRadar({ competencies }: CompetencyRadarProps) {
                 .slice(0, 2)
                 .map(([key, comp]) => (
                   <div key={key} className="text-sm text-green-700">
-                    ✓ {competencyLabels[key] || key} ({comp.score}점)
+                    ✓ {(competencyLabels as any)[key] || key} ({comp.score}점)
                   </div>
                 ))}
             </div>
@@ -282,7 +282,7 @@ export function CompetencyRadar({ competencies }: CompetencyRadarProps) {
                 .slice(0, 2)
                 .map(([key, comp]) => (
                   <div key={key} className="text-sm text-orange-700">
-                    → {competencyLabels[key] || key} ({comp.score}점)
+                    → {(competencyLabels as any)[key] || key} ({comp.score}점)
                   </div>
                 ))}
             </div>

@@ -8,7 +8,7 @@ interface CareerRecommendation {
   reasoning: string;
   pathway: string[];
   timeframe: string;
-  difficulty: 'easy' | 'moderate' | 'challenging';
+  difficulty: string;
 }
 
 interface CareerRecommendationsProps {

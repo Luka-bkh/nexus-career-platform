@@ -1,15 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-
-interface CareerRecommendation {
-  title: string;
-  matchScore: number;
-  reasoning: string;
-  pathway: string[];
-  timeframe: string;
-  difficulty: string;
-}
+import { CareerRecommendation } from '@/lib/api';
 
 interface CareerRecommendationsProps {
   recommendations: CareerRecommendation[];

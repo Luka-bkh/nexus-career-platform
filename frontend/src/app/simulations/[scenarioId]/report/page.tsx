@@ -313,7 +313,7 @@ export default function SimulationReportPage() {
           </div>
         );
       case 'career':
-        return <CareerRecommendations recommendations={report.aiInsights.careerRecommendations} />;
+        return <CareerRecommendations recommendations={report.aiInsights.careerRecommendations as any} />;
       case 'strengths':
         return <StrengthsWeaknesses data={report.strengthsWeaknesses} insights={report.aiInsights} />;
       case 'benchmarking':

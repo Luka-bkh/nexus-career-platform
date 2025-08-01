@@ -319,7 +319,7 @@ export default function SimulationReportPage() {
       case 'benchmarking':
         return <BenchmarkingChart benchmarking={report.benchmarking} />;
       case 'action':
-        return <ActionPlan actionPlan={report.actionPlan} />;
+        return <ActionPlan actionPlan={report.actionPlan as any} />;
       default:
         return null;
     }

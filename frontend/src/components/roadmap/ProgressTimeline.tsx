@@ -13,7 +13,7 @@ export function ProgressTimeline({ roadmap }: ProgressTimelineProps) {
   // 현재 날짜부터 시작하여 각 단계의 예상 완료일 계산
   const calculateTimeline = () => {
     const startDate = new Date();
-    const timeline = [];
+    const timeline: any[] = [];
     let currentDate = new Date(startDate);
 
     roadmap.phases.forEach((phase: any, index: number) => {

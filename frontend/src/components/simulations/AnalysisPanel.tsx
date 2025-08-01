@@ -109,12 +109,12 @@ export function AnalysisPanel({ data, onAnalysisChange, value }: AnalysisPanelPr
                       parseInt(rating) >= 3 ? 'bg-yellow-500' :
                       'bg-red-500'
                     }`}
-                    style={{ width: `${(count / mockData.statistics.total_reviews) * 100}%` }}
+                    style={{ width: `${((count as number) / mockData.statistics.total_reviews) * 100}%` }}
                   ></div>
                 </div>
               </div>
               <span className="w-16 text-sm text-gray-600 text-right">
-                {count.toLocaleString()}
+                {(count as number).toLocaleString()}
               </span>
             </div>
           ))}

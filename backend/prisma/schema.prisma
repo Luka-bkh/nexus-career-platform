@@ -1,0 +1,613 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 사용자 모델
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  nickname  String?
+  phone     String?
+  birthYear Int?
+  gender    Gender?
+  
+  // 계정 상태
+  isActive     Boolean @default(true)
+  emailVerified Boolean @default(false)
+  
+  // 구독 정보
+  subscriptionType SubscriptionType @default(FREE)
+  credits          Int              @default(3) // 무료 크레딧
+  paidCredits      Int              @default(0) // 유료 크레딧
+  
+  // 추천인 시스템
+  referralCode   String?  @unique
+  referredBy     String?
+  referrer       User?    @relation("UserReferrals", fields: [referredBy], references: [id])
+  referrals      User[]   @relation("UserReferrals")
+  
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastLoginAt DateTime?
+  
+  // 관계
+  careerSurveys    CareerSurvey[]
+  careerResults    CareerResult[]
+  simulationResults SimulationResult[]
+  payments         Payment[]
+  creditTransactions CreditTransaction[]
+  activityLogs     ActivityLog[]
+  simulationSessions SimulationSession[]
+  finalSimulationResults FinalSimulationResult[]
+  userRoadmaps     UserRoadmap[]
+  userQuests       UserQuest[]
+  
+  @@map("users")
+}
+
+// 진로 적성 설문 모델
+model CareerSurvey {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // 설문 데이터 (암호화된 JSON)
+  basicInfo      Json  // 기본 정보: 연령대, 학력, 경력, 거주지
+  interests      Json  // 관심사: 관심 분야, 선호 기업, 근무 환경
+  strengths      Json  // 강점: 스킬, 성취, 업무 스타일
+  personality    Json  // 성격: 5가지 특성, 문제해결, 소통 스타일
+  
+  // 메타데이터
+  isCompleted    Boolean @default(false)
+  completedAt    DateTime?
+  
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // 관계
+  careerResults CareerResult[]
+  
+  @@map("career_surveys")
+}
+
+// AI 진로 추천 결과 모델
+model CareerResult {
+  id             String @id @default(cuid())
+  userId         String
+  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  careerSurveyId String
+  careerSurvey   CareerSurvey @relation(fields: [careerSurveyId], references: [id], onDelete: Cascade)
+  
+  // 추천 결과
+  recommendedCareers Json // 추천 직업 목록 및 적합도 점수
+  careerRoadmaps     Json // 진로별 로드맵
+  skillGaps          Json // 부족한 스킬 분석
+  learningPaths      Json // 추천 학습 경로
+  
+  // AI 분석 점수
+  matchScore     Float  // 전체 적합도 점수 (0-100)
+  confidence     Float  // 신뢰도 (0-1)
+  
+  // 크레딧 사용
+  creditsUsed    Int    @default(1)
+  
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("career_results")
+}
+
+// 직업 시뮬레이션 결과 모델
+model SimulationResult {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // 시뮬레이션 정보
+  careerType     String // 직업 유형 (예: "ai_developer")
+  scenarioId     String // 시나리오 ID
+  
+  // 결과 데이터
+  score          Int    // 시뮬레이션 점수 (0-100)
+  completedTasks Json   // 완료된 태스크 목록
+  feedback       Json   // 상세 피드백
+  recommendations Json  // 개선 추천사항
+  
+  // 진행 상황
+  isCompleted    Boolean @default(false)
+  duration       Int?    // 소요 시간 (분)
+  
+  // 크레딧 사용
+  creditsUsed    Int     @default(2)
+  
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  completedAt DateTime?
+  
+  @@map("simulation_results")
+}
+
+// 결제 모델
+model Payment {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // 결제 정보
+  amount         Int           // 결제 금액 (원)
+  currency       String        @default("KRW")
+  credits        Int           // 구매한 크레딧 수
+  paymentMethod  PaymentMethod
+  
+  // 결제 상태
+  status         PaymentStatus @default(PENDING)
+  transactionId  String?       @unique // 외부 결제 시스템 ID
+  
+  // 메타데이터
+  description    String?
+  metadata       Json?
+  
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  paidAt    DateTime?
+  
+  @@map("payments")
+}
+
+// 크레딧 트랜잭션 모델
+model CreditTransaction {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // 트랜잭션 정보
+  type         CreditTransactionType
+  amount       Int                    // 크레딧 양 (양수: 지급, 음수: 차감)
+  reason       String                 // 사유
+  description  String?                // 상세 설명
+  
+  // 관련 정보
+  relatedId    String?                // 관련 엔티티 ID (설문, 결제 등)
+  relatedType  String?                // 관련 엔티티 타입
+  
+  // 잔액 정보
+  balanceBefore Int                   // 트랜잭션 전 잔액
+  balanceAfter  Int                   // 트랜잭션 후 잔액
+  
+  // 만료 정보 (유료 크레딧의 경우)
+  expiresAt    DateTime?
+  
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  
+  @@map("credit_transactions")
+}
+
+// 활동 로그 모델
+model ActivityLog {
+  id       String @id @default(cuid())
+  userId   String?
+  user     User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  // 로그 정보
+  action      String   // 액션 타입 (예: "survey_completed", "simulation_started")
+  description String?  // 설명
+  metadata    Json?    // 추가 데이터
+  
+  // 요청 정보
+  ipAddress   String?
+  userAgent   String?
+  
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  
+  @@map("activity_logs")
+}
+
+// 열거형 정의
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum SubscriptionType {
+  FREE
+  BASIC
+  PREMIUM
+}
+
+enum PaymentMethod {
+  CARD
+  BANK_TRANSFER
+  KAKAO_PAY
+  NAVER_PAY
+  PAYPAL
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+enum CreditTransactionType {
+  SIGNUP_BONUS          // 가입 보너스
+  REFERRAL_BONUS        // 추천인 보너스
+  SURVEY_COMPLETION     // 설문 완료 보상
+  PURCHASE              // 크레딧 구매
+  SURVEY_USAGE          // 설문 사용
+  ANALYSIS_USAGE        // 분석 사용
+  SIMULATION_USAGE      // 시뮬레이션 사용
+  ADMIN_ADJUSTMENT      // 관리자 조정
+  PROMOTION             // 프로모션
+  REFUND                // 환불
+}
+
+enum SimulationStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  PAUSED
+  COMPLETED
+  ABANDONED
+}
+
+enum InteractionType {
+  DIALOGUE              // 대화 선택
+  DECISION              // 의사결정
+  CODING                // 코딩 실습
+  ANALYSIS              // 분석 작업
+  COLLABORATION         // 협업 상황
+  PROBLEM_SOLVING       // 문제 해결
+  TECHNICAL_DECISION    // 기술적 판단
+  EXPERIMENT            // 실험 설계
+  DEPLOYMENT            // 배포 작업
+  MONITORING            // 모니터링
+  RETROSPECTIVE         // 회고
+  CAREER_REFLECTION     // 진로 성찰
+}
+
+// 시뮬레이션 세션 모델
+model SimulationSession {
+  id            String @id @default(cuid())
+  userId        String
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // 시뮬레이션 정보
+  simulationId  String                    // 시나리오 ID (ai-developer-001 등)
+  scenarioData  Json                      // 시나리오 전체 데이터 캐시
+  
+  // 현재 상태
+  currentChapter String                   // 현재 챕터 ID
+  currentQuest   String                   // 현재 퀘스트 ID
+  currentState   Json                     // 현재 게임 상태 (변수, 선택 등)
+  
+  // 진행 상황
+  progress       Float   @default(0.0)    // 진행률 (0.0 ~ 1.0)
+  totalScore     Int     @default(0)      // 누적 점수
+  skillLevels    Json    @default("{}")   // 스킬별 레벨
+  badges         Json    @default("[]")   // 획득한 배지 목록
+  
+  // 선택 기록
+  choicesHistory Json    @default("[]")   // 모든 선택 내역
+  
+  // 상태 정보
+  status         SimulationStatus @default(IN_PROGRESS)
+  
+  // 성능 지표
+  averageResponseTime Int?                // 평균 응답 시간 (ms)
+  totalPlayTime      Int?                // 총 플레이 시간 (초)
+  
+  // 타임스탬프
+  startedAt    DateTime  @default(now())
+  lastActiveAt DateTime  @default(now())
+  completedAt  DateTime?
+  
+  // 관계
+  interactions SimulationInteraction[]
+  result       FinalSimulationResult?
+  
+  @@map("simulation_sessions")
+}
+
+// 시뮬레이션 상호작용 로그
+model SimulationInteraction {
+  id        String @id @default(cuid())
+  sessionId String
+  session   SimulationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  // 상호작용 정보
+  questId      String                     // 퀘스트 ID
+  interactionType InteractionType         // 상호작용 유형
+  userInput    Json                       // 사용자 입력
+  aiResponse   Json                       // AI 응답
+  
+  // 평가 정보
+  scoreGained  Int      @default(0)       // 획득 점수
+  skillsGained Json     @default("{}")    // 획득한 스킬 경험치
+  
+  // 성능 지표
+  responseTime Int                        // 응답 시간 (ms)
+  
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  
+  @@map("simulation_interactions")
+}
+
+// 시뮬레이션 최종 결과
+model FinalSimulationResult {
+  id        String @id @default(cuid())
+  sessionId String @unique
+  session   SimulationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // 점수 및 평가
+  finalScore    Int                       // 최종 점수
+  grade         String                    // 등급 (A+, A, B+, B, C)
+  categoryScores Json                     // 영역별 점수
+  
+  // 역량 분석
+  skillAssessment Json                    // 스킬별 평가
+  strengthsWeaknesses Json               // 강점/약점 분석
+  
+  // 개인화된 피드백
+  personalizedFeedback Json              // AI 생성 맞춤 피드백
+  nextSteps       Json                   // 추천 다음 단계
+  
+  // 비교 정보
+  percentile      Float                   // 상위 몇 %
+  averageScore    Float                   // 전체 평균 점수
+  
+  // 추천 직업
+  jobRecommendations Json                 // 체험 기반 직업 추천
+  
+  // 크레딧 정보
+  creditsUsed     Int                     // 사용한 크레딧
+  bonusCredits    Int     @default(0)     // 보너스 크레딧
+  
+  // 타임스탬프
+  completedAt DateTime @default(now())
+  
+  @@map("final_simulation_results")
+}
+
+// 사용자 개인화 진로 로드맵 모델
+model UserRoadmap {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 로드맵 기본 정보
+  title       String                      // 로드맵 제목 (예: "AI 개발자로의 여정")
+  description String?                     // 로드맵 설명
+  targetRole  String                      // 목표 직업 (예: "AI 개발자")
+  difficulty  RoadmapDifficulty          // 로드맵 난이도
+  estimatedDuration Int                   // 예상 완료 기간 (개월)
+
+  // 데이터 소스 정보
+  basedOnSurvey     Boolean @default(false)     // 설문 기반 여부
+  basedOnSimulation Boolean @default(false)     // 시뮬레이션 기반 여부
+  dataSourceIds     Json    @default("[]")      // 사용된 데이터 소스 ID들
+
+  // 로드맵 구조 데이터 (JSONB)
+  roadmapData Json // {
+    // "phases": [
+    //   {
+    //     "id": "phase-1",
+    //     "title": "기초 역량 습득",
+    //     "description": "프로그래밍 기초와 컴퓨터 과학 기본 개념 학습",
+    //     "duration": 3, // 개월
+    //     "prerequisites": [],
+    //     "milestones": [
+    //       {
+    //         "id": "milestone-1-1",
+    //         "title": "Python 기초 마스터",
+    //         "description": "Python 문법과 기본 라이브러리 사용법 습득",
+    //         "type": "skill", // skill, project, certification, experience
+    //         "priority": "high",
+    //         "estimatedHours": 120,
+    //         "resources": [
+    //           {
+    //             "type": "course",
+    //             "title": "Python 기초 강의",
+    //             "url": "https://example.com/python-basics",
+    //             "provider": "Coursera",
+    //             "cost": "free"
+    //           }
+    //         ],
+    //         "skills": ["Python", "프로그래밍 기초"],
+    //         "successCriteria": [
+    //           "기본 자료구조 구현 가능",
+    //           "간단한 알고리즘 문제 해결"
+    //         ]
+    //       }
+    //     ]
+    //   }
+    // ],
+    // "totalSkills": ["Python", "Machine Learning", "Data Analysis"],
+    // "careerProgression": [
+    //   {
+    //     "position": "주니어 AI 개발자",
+    //     "timeline": "3-6개월",
+    //     "requirements": ["Python", "기본 ML 지식"]
+    //   }
+    // ]
+  // }
+
+  // 진행 상황 추적
+  currentPhase    String?  @default("phase-1")  // 현재 단계
+  completedPhases Json     @default("[]")       // 완료된 단계들
+  progress        Float    @default(0.0)        // 전체 진행률 (0.0 ~ 1.0)
+  
+  // 개인화 정보
+  personalizedFor Json // {
+    // "learningStyle": "visual",
+    // "availability": "weekends", // 학습 가능 시간
+    // "preferredLearningMethods": ["online", "project"],
+    // "currentSkillLevel": "beginner",
+    // "budget": "free",
+    // "timeCommitment": "10-15h/week"
+  // }
+
+  // AI 분석 메타데이터
+  aiAnalysis Json // {
+    // "strengthsConsidered": ["논리적 사고", "문제 해결"],
+    // "weaknessesAddressed": ["실무 경험 부족"],
+    // "surveyInfluence": 0.6,     // 설문 데이터 반영 비율
+    // "simulationInfluence": 0.4, // 시뮬레이션 데이터 반영 비율
+    // "confidence": 0.85,         // AI 추천 신뢰도
+    // "adaptationLevel": "high"   // 사용자 상황에 맞는 적응도
+  // }
+
+  // 업데이트 정보
+  version     Int      @default(1)        // 로드맵 버전
+  isActive    Boolean  @default(true)     // 활성 로드맵 여부
+  isCompleted Boolean  @default(false)    // 완료 여부
+
+  // 타임스탬프
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastReviewedAt DateTime?               // 마지막 검토 시점
+  
+  @@map("user_roadmaps")
+}
+
+// 로드맵 난이도 열거형
+enum RoadmapDifficulty {
+  BEGINNER       // 초급자용 (기초부터 시작)
+  INTERMEDIATE   // 중급자용 (일부 기본 지식 보유)
+  ADVANCED       // 고급자용 (상당한 배경 지식 보유)
+  EXPERT         // 전문가용 (분야 전환 또는 전문성 심화)
+}
+
+// 퀘스트 모델
+model Quest {
+  id            String @id @default(cuid())
+  name          String                    // 퀘스트 이름 (예: "첫 번째 시뮬레이션 완료")
+  description   String                    // 퀘스트 설명
+  type          QuestType                 // 퀘스트 타입
+  category      QuestCategory             // 퀘스트 카테고리
+  difficulty    QuestDifficulty @default(EASY)  // 퀘스트 난이도
+  
+  // 목표 및 조건
+  targetValue   Int         @default(1)   // 목표 값 (예: 3번 로그인, 2개 시뮬레이션 완료)
+  requirements  Json        @default("{}") // 추가 요구사항 (JSON)
+  
+  // 보상
+  rewardCredits Int         @default(0)   // 크레딧 보상
+  rewardXp      Int         @default(10)  // 경험치 보상
+  rewardBadge   String?                   // 뱃지 보상 (선택사항)
+  
+  // 퀘스트 설정
+  isDaily       Boolean     @default(true)  // 일일 퀘스트 여부
+  isRepeatable  Boolean     @default(true)  // 반복 가능 여부
+  isActive      Boolean     @default(true)  // 활성 상태
+  priority      Int         @default(50)    // 우선순위 (0-100)
+  
+  // 유효 기간
+  validFrom     DateTime?                 // 시작일 (null이면 항상 유효)
+  validUntil    DateTime?                 // 종료일 (null이면 항상 유효)
+  
+  // 타임스탬프
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // 관계
+  userQuests    UserQuest[]
+  
+  @@map("quests")
+}
+
+// 사용자별 퀘스트 진행 상황
+model UserQuest {
+  id          String @id @default(cuid())
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questId     String
+  quest       Quest  @relation(fields: [questId], references: [id], onDelete: Cascade)
+  
+  // 진행 상황
+  status      QuestStatus @default(IN_PROGRESS)  // 퀘스트 상태
+  progress    Int         @default(0)           // 현재 진행값
+  isCompleted Boolean     @default(false)       // 완료 여부
+  
+  // 완료 정보
+  completedAt DateTime?                         // 완료 시간
+  rewardClaimed Boolean    @default(false)      // 보상 수령 여부
+  
+  // 퀘스트 할당 정보
+  assignedDate DateTime   @default(now())       // 할당된 날짜 (UTC 기준)
+  expiresAt   DateTime?                         // 만료 시간
+  
+  // 메타데이터
+  metadata    Json        @default("{}")        // 추가 진행 정보 (JSON)
+  
+  // 타임스탬프
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@unique([userId, questId, assignedDate])
+  @@map("user_quests")
+}
+
+// 퀘스트 타입 열거형
+enum QuestType {
+  LOGIN             // 로그인
+  SIMULATION        // 시뮬레이션 관련
+  SURVEY            // 설문조사 관련
+  ROADMAP           // 로드맵 관련
+  SOCIAL            // 소셜 활동
+  LEARNING          // 학습 활동
+  ACHIEVEMENT       // 성취 관련
+  STREAK            // 연속 활동
+  EXPLORATION       // 탐색 활동
+  MILESTONE         // 마일스톤 관련
+}
+
+// 퀘스트 카테고리 열거형
+enum QuestCategory {
+  DAILY             // 일일 퀘스트
+  WEEKLY            // 주간 퀘스트
+  MONTHLY           // 월간 퀘스트
+  SPECIAL           // 특별 퀘스트
+  ONBOARDING        // 온보딩 퀘스트
+  SEASONAL          // 시즌/이벤트 퀘스트
+}
+
+// 퀘스트 난이도 열거형
+enum QuestDifficulty {
+  EASY              // 쉬움 (1-2분)
+  NORMAL            // 보통 (5-10분)
+  HARD              // 어려움 (30분-1시간)
+  EXTREME           // 매우 어려움 (수시간-며칠)
+}
+
+// 퀘스트 상태 열거형
+enum QuestStatus {
+  ASSIGNED          // 할당됨
+  IN_PROGRESS       // 진행 중
+  COMPLETED         // 완료됨
+  FAILED            // 실패
+  EXPIRED           // 만료됨
+  LOCKED            // 잠김 (선행 퀘스트 미완료)
+}

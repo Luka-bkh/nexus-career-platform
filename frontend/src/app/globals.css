@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 시니어 친화적 기본 스타일 */
+@layer base {
+  html {
+    font-size: 18px; /* 기본 폰트 크기를 크게 설정 */
+  }
+  
+  body {
+    @apply text-gray-900 leading-relaxed;
+  }
+  
+  /* 고대비 포커스 스타일 */
+  *:focus {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+  }
+  
+  /* 터치 친화적 버튼 */
+  button {
+    @apply min-h-[48px] min-w-[48px];
+  }
+}
+
+@layer components {
+  /* 기본 버튼 스타일 */
+  .btn {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-200 min-h-[48px] flex items-center justify-center;
+  }
+  
+  .btn-primary {
+    @apply btn bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300;
+  }
+  
+  .btn-outline {
+    @apply btn border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white;
+  }
+  
+  /* 카드 스타일 */
+  .card {
+    @apply bg-white rounded-xl shadow-lg border border-gray-200 p-6;
+  }
+  
+  /* 진행 바 스타일 */
+  .progress-bar {
+    @apply w-full bg-gray-200 rounded-full h-3;
+  }
+  
+  .progress-fill {
+    @apply bg-blue-600 h-3 rounded-full transition-all duration-300;
+  }
+  
+  /* 폼 입력 스타일 */
+  .form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg;
+  }
+  
+  .form-label {
+    @apply block text-lg font-medium text-gray-700 mb-2;
+  }
+  
+  /* 체크박스/라디오 스타일 */
+  .form-checkbox {
+    @apply h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded;
+  }
+  
+  .form-radio {
+    @apply h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300;
+  }
+}
+
+@layer utilities {
+  /* 시니어 친화적 유틸리티 */
+  .text-senior-friendly {
+    @apply text-lg leading-relaxed;
+  }
+  
+  .btn-senior-friendly {
+    @apply min-h-[56px] text-lg px-8 py-4;
+  }
+  
+  /* 접근성 유틸리티 */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  }
+}

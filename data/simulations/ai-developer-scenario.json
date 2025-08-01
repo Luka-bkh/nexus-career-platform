@@ -1,0 +1,818 @@
+{
+  "scenarioId": "ai-developer-001",
+  "title": "AI 개발자 실무 체험",
+  "description": "스타트업에서 AI 개발자로 첫 출근! 실제 프로젝트를 통해 AI 개발자의 업무를 체험해보세요.",
+  "duration": "45-60분",
+  "difficulty": "intermediate",
+  "creditsRequired": 2,
+  "tags": ["ai", "machine-learning", "python", "data-science", "startup"],
+  
+  "learningObjectives": [
+    "AI 개발자의 일상 업무 이해",
+    "머신러닝 프로젝트 수행 과정 체험",
+    "팀 협업 및 커뮤니케이션 경험",
+    "데이터 분석 및 모델 구축 프로세스 학습",
+    "AI 프로젝트의 도전과 해결 방법 이해"
+  ],
+
+  "persona": {
+    "name": "김지민",
+    "age": 25,
+    "background": "컴퓨터공학과 졸업",
+    "experience": "신입 AI 개발자 (경력 3개월)",
+    "company": "테크스타트업 'DataWave'",
+    "team": "AI/ML 팀 (팀장 1명, 시니어 2명, 주니어 2명)",
+    "personality": "호기심 많고 배우려는 의지가 강함"
+  },
+
+  "gameSettings": {
+    "workEnvironment": {
+      "office": "개방형 사무실",
+      "workStyle": "하이브리드 (사무실 3일, 재택 2일)",
+      "team": "소규모 애자일 팀",
+      "culture": "수평적이고 자유로운 분위기"
+    },
+    "tools": [
+      "Python", "Jupyter Notebook", "TensorFlow", "PyTorch", 
+      "Git", "Docker", "AWS", "Slack", "Jira"
+    ],
+    "currentProject": {
+      "name": "고객 리뷰 감정 분석 시스템",
+      "description": "전자상거래 플랫폼의 상품 리뷰를 분석하여 고객 만족도를 자동으로 분류하는 AI 모델 개발",
+      "deadline": "3주 후",
+      "status": "데이터 수집 및 전처리 단계"
+    }
+  },
+
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "title": "첫 출근과 팀 미팅",
+      "description": "새로운 프로젝트가 시작되었습니다. 팀 미팅에서 역할을 분담받고 계획을 세워보세요.",
+      "duration": "10-12분",
+      "setting": {
+        "time": "오전 9:30",
+        "location": "회의실",
+        "attendees": ["팀장 박현수", "시니어 이소영", "시니어 정민호", "주니어 김지민(플레이어)", "주니어 최유진"]
+      },
+      "quests": [
+        {
+          "id": "q1-1",
+          "type": "dialogue",
+          "title": "프로젝트 브리핑 참여",
+          "description": "팀장이 새로운 프로젝트에 대해 설명합니다. 집중해서 들어보세요.",
+          "content": {
+            "speaker": "박현수 팀장",
+            "dialogue": "안녕하세요, 모두 모였네요. 오늘부터 새로운 프로젝트를 시작합니다. 'ReviewSense'라는 고객 리뷰 감정 분석 시스템을 개발하게 됩니다. 이커머스 플랫폼에서 매일 수천 개의 리뷰가 올라오는데, 이를 자동으로 분석해서 긍정/부정/중립으로 분류하는 게 목표입니다.",
+            "options": [
+              {
+                "text": "프로젝트 목표에 대해 질문하기",
+                "points": 5,
+                "next": "q1-2a"
+              },
+              {
+                "text": "기술 스택에 대해 문의하기", 
+                "points": 3,
+                "next": "q1-2b"
+              },
+              {
+                "text": "조용히 듣기",
+                "points": 1,
+                "next": "q1-2c"
+              }
+            ]
+          }
+        },
+        {
+          "id": "q1-2a",
+          "type": "dialogue",
+          "title": "적극적인 질문",
+          "description": "프로젝트 목표에 대해 더 자세히 알아보겠습니다.",
+          "content": {
+            "speaker": "김지민(플레이어)",
+            "dialogue": "팀장님, 정확한 성능 목표나 KPI가 있나요? 예를 들어 정확도 몇 퍼센트를 달성해야 하는지요?",
+            "feedback": {
+              "type": "positive",
+              "message": "훌륭한 질문입니다! 목표 지향적 사고를 보여주었습니다.",
+              "teamResponse": "박현수: 좋은 질문이네요. 목표는 85% 이상의 정확도입니다. 현재 수작업으로는 70% 정도의 일관성을 보이고 있어요."
+            }
+          }
+        },
+        {
+          "id": "q1-3",
+          "type": "decision",
+          "title": "역할 분담 결정",
+          "description": "팀에서 당신의 역할을 정해야 합니다. 어떤 업무를 맡고 싶나요?",
+          "content": {
+            "situation": "팀장이 프로젝트 역할을 분담하고 있습니다. 신입인 당신에게 적절한 업무를 배정하려고 합니다.",
+            "options": [
+              {
+                "text": "데이터 수집 및 전처리 담당",
+                "description": "크롤링과 데이터 정제 작업",
+                "difficulty": "초급",
+                "points": 5,
+                "consequences": "기초적이지만 중요한 업무를 담당하게 됩니다.",
+                "next": "chapter-2"
+              },
+              {
+                "text": "모델 개발 보조",
+                "description": "시니어와 함께 ML 모델 구축",
+                "difficulty": "중급",
+                "points": 7,
+                "consequences": "도전적이지만 많은 것을 배울 수 있습니다.",
+                "next": "chapter-2"
+              },
+              {
+                "text": "API 개발 및 통합",
+                "description": "모델을 서비스화하는 백엔드 개발",
+                "difficulty": "중급",
+                "points": 6,
+                "consequences": "AI와 소프트웨어 개발을 연결하는 중요한 역할입니다.",
+                "next": "chapter-2"
+              }
+            ]
+          }
+        }
+      ],
+      "resources": {
+        "backgrounds": [
+          "meeting-room.jpg",
+          "startup-office.jpg"
+        ],
+        "characters": [
+          "team-leader-park.png",
+          "senior-lee.png", 
+          "senior-jung.png",
+          "junior-choi.png",
+          "player-avatar.png"
+        ],
+        "sounds": [
+          "office-ambiance.mp3",
+          "meeting-discussion.mp3",
+          "keyboard-typing.mp3"
+        ]
+      }
+    },
+
+    {
+      "id": "chapter-2", 
+      "title": "데이터 분석 및 탐색",
+      "description": "실제 리뷰 데이터를 분석하고 문제점을 파악해보세요.",
+      "duration": "15-18분",
+      "setting": {
+        "time": "오전 10:30",
+        "location": "개인 책상",
+        "task": "리뷰 데이터셋 분석"
+      },
+      "quests": [
+        {
+          "id": "q2-1",
+          "type": "coding",
+          "title": "데이터 로딩 및 확인",
+          "description": "Pandas를 사용해서 리뷰 데이터를 불러오고 기본 정보를 확인해보세요.",
+          "content": {
+            "codeTemplate": "import pandas as pd\nimport numpy as np\n\n# 데이터 로딩\ndf = pd.read_csv('reviews.csv')\n\n# 여기에 코드를 작성하세요\n",
+            "expectedOutputs": [
+              "df.shape",
+              "df.info()",
+              "df.head()"
+            ],
+            "hints": [
+              "데이터의 크기를 확인해보세요",
+              "컬럼들의 타입을 살펴보세요",
+              "처음 몇 개 행을 확인해보세요"
+            ],
+            "solutions": [
+              "print(f'데이터 크기: {df.shape}')",
+              "print(df.info())",
+              "print(df.head())"
+            ]
+          }
+        },
+        {
+          "id": "q2-2",
+          "type": "analysis",
+          "title": "데이터 품질 문제 발견",
+          "description": "데이터를 살펴보니 몇 가지 문제가 보입니다. 어떤 문제들이 있는지 찾아보세요.",
+          "content": {
+            "dataIssues": [
+              {
+                "issue": "결측값 (NaN)",
+                "description": "리뷰 텍스트의 15%가 비어있음",
+                "severity": "high"
+              },
+              {
+                "issue": "중복 데이터",
+                "description": "동일한 리뷰가 여러 번 기록됨",
+                "severity": "medium"
+              },
+              {
+                "issue": "라벨 불균형",
+                "description": "긍정:부정:중립 = 60:25:15",
+                "severity": "medium"
+              },
+              {
+                "issue": "특수문자 및 이모지",
+                "description": "일관되지 않은 텍스트 형태",
+                "severity": "low"
+              }
+            ],
+            "question": "가장 먼저 해결해야 할 문제는 무엇일까요?",
+            "options": [
+              {
+                "text": "결측값 처리",
+                "reasoning": "데이터의 15%가 비어있으면 모델 성능에 큰 영향",
+                "points": 8,
+                "correct": true
+              },
+              {
+                "text": "중복 제거",
+                "reasoning": "중복 데이터는 학습을 편향시킬 수 있음",
+                "points": 6,
+                "correct": false
+              },
+              {
+                "text": "라벨 균형 맞추기",
+                "reasoning": "불균형 데이터도 문제지만 우선순위는 낮음",
+                "points": 4,
+                "correct": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "q2-3",
+          "type": "collaboration",
+          "title": "시니어에게 조언 구하기",
+          "description": "데이터 문제에 대해 시니어 동료에게 조언을 구해보세요.",
+          "content": {
+            "situation": "이소영 시니어가 지나가다가 당신이 고민하는 모습을 보고 다가왔습니다.",
+            "dialogue": "지민씨, 뭔가 고민이 있어 보이네요. 데이터 분석하면서 어려운 점이 있나요?",
+            "options": [
+              {
+                "text": "결측값 처리 방법에 대해 문의",
+                "response": "좋은 접근이에요. 리뷰 데이터에서는 보통 결측값을 제거하거나 'N/A'로 표시해요. 하지만 너무 많이 제거하면 데이터가 부족해질 수 있으니 주의하세요.",
+                "points": 7,
+                "skillGain": "데이터 전처리"
+              },
+              {
+                "text": "전체적인 접근 방법 조언 요청",
+                "response": "전체적으로 보면 1) 데이터 정제, 2) 탐색적 분석, 3) 특성 엔지니어링, 4) 모델링 순서로 진행하면 돼요. 천천히 단계별로 접근해보세요.",
+                "points": 5,
+                "skillGain": "프로젝트 관리"
+              },
+              {
+                "text": "혼자 해보겠다고 말하기",
+                "response": "독립적인 자세는 좋지만, 협업이 중요한 환경에서는 도움을 요청하는 것도 필요해요. 언제든지 궁금한 게 있으면 말씀해주세요.",
+                "points": 2,
+                "skillGain": "커뮤니케이션"
+              }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "chapter-3",
+      "title": "모델 개발과 실험",
+      "description": "감정 분석 모델을 직접 구축하고 성능을 개선해보세요.",
+      "duration": "15-20분",
+      "setting": {
+        "time": "오후 2:00",
+        "location": "개발팀 구역",
+        "task": "머신러닝 모델 개발"
+      },
+      "quests": [
+        {
+          "id": "q3-1",
+          "type": "technical-decision",
+          "title": "모델 선택",
+          "description": "감정 분석에 적합한 모델을 선택해야 합니다.",
+          "content": {
+            "situation": "정민호 시니어가 모델 선택에 대해 설명해주고 있습니다.",
+            "explanation": "감정 분석에는 여러 접근 방법이 있어요. 각각 장단점이 있으니 프로젝트 상황에 맞게 선택해야 합니다.",
+            "models": [
+              {
+                "name": "Naive Bayes",
+                "pros": ["빠른 학습", "적은 데이터로도 동작", "해석 가능"],
+                "cons": ["단순한 가정", "복잡한 패턴 인식 한계"],
+                "accuracy": "75-80%",
+                "complexity": "낮음"
+              },
+              {
+                "name": "LSTM",
+                "pros": ["순차 정보 활용", "문맥 이해", "높은 성능"],
+                "cons": ["학습 시간 오래", "많은 데이터 필요", "복잡함"],
+                "accuracy": "82-87%",
+                "complexity": "높음"
+              },
+              {
+                "name": "BERT (Pre-trained)",
+                "pros": ["최고 성능", "사전 훈련", "전이 학습"],
+                "cons": ["높은 컴퓨팅 비용", "큰 모델 크기"],
+                "accuracy": "88-92%",
+                "complexity": "매우 높음"
+              }
+            ],
+            "constraints": {
+              "timeline": "3주",
+              "budget": "제한적",
+              "team_experience": "중급",
+              "deployment": "실시간 API"
+            },
+            "question": "프로젝트 제약사항을 고려할 때 어떤 모델을 선택하시겠습니까?"
+          }
+        },
+        {
+          "id": "q3-2",
+          "type": "problem-solving",
+          "title": "성능 문제 해결",
+          "description": "첫 번째 모델의 성능이 기대보다 낮습니다. 원인을 찾아보세요.",
+          "content": {
+            "situation": "LSTM 모델을 학습시켰지만 검증 정확도가 72%에 머물고 있습니다. 목표인 85%에 미치지 못합니다.",
+            "metrics": {
+              "accuracy": 0.72,
+              "precision": {"positive": 0.78, "negative": 0.69, "neutral": 0.65},
+              "recall": {"positive": 0.85, "negative": 0.55, "neutral": 0.48},
+              "f1_score": 0.71
+            },
+            "possibleCauses": [
+              {
+                "cause": "데이터 불균형",
+                "description": "중립 클래스의 recall이 특히 낮음",
+                "solution": "클래스 가중치 조정 또는 오버샘플링",
+                "effort": "중간"
+              },
+              {
+                "cause": "특성 엔지니어링 부족", 
+                "description": "단순한 토큰화만 사용",
+                "solution": "TF-IDF, N-gram, 감정 어휘 사전 활용",
+                "effort": "높음"
+              },
+              {
+                "cause": "하이퍼파라미터 튜닝",
+                "description": "기본값 사용",
+                "solution": "학습률, 배치 크기, 레이어 수 조정",
+                "effort": "낮음"
+              },
+              {
+                "cause": "데이터 품질",
+                "description": "라벨링 일관성 문제",
+                "solution": "데이터 재검토 및 정제",
+                "effort": "높음"
+              }
+            ],
+            "question": "제한된 시간 안에서 가장 효과적인 개선 방법은?"
+          }
+        },
+        {
+          "id": "q3-3",
+          "type": "experiment",
+          "title": "A/B 테스트 설계",
+          "description": "두 가지 접근 방법의 성능을 비교하는 실험을 설계해보세요.",
+          "content": {
+            "scenario": "팀장이 두 가지 모델 중 어느 것이 더 좋은지 객관적으로 평가하고 싶다고 했습니다.",
+            "models": {
+              "modelA": "LSTM + 하이퍼파라미터 튜닝",
+              "modelB": "BERT fine-tuning"
+            },
+            "considerations": [
+              "공정한 비교를 위한 데이터 분할",
+              "평가 지표 선정",
+              "실험 기간 설정",
+              "통계적 유의성 검증"
+            ],
+            "tasks": [
+              {
+                "task": "테스트 데이터셋 분할",
+                "options": [
+                  "시간순 분할 (최근 20% 테스트)",
+                  "랜덤 분할 (80:20)",
+                  "계층화 분할 (클래스 비율 유지)"
+                ],
+                "correct": "계층화 분할 (클래스 비율 유지)",
+                "explanation": "불균형 데이터에서는 각 클래스의 비율을 유지하는 것이 중요합니다."
+              },
+              {
+                "task": "주요 평가 지표 선택",
+                "options": [
+                  "정확도 (Accuracy)",
+                  "F1-score (Macro)",
+                  "비즈니스 KPI (고객 만족도 예측)"
+                ],
+                "correct": "F1-score (Macro)",
+                "explanation": "불균형 데이터에서는 F1-score가 더 균형잡힌 평가를 제공합니다."
+              }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "chapter-4",
+      "title": "배포와 모니터링",
+      "description": "완성된 모델을 실제 서비스에 배포하고 성능을 모니터링해보세요.",
+      "duration": "10-15분",
+      "setting": {
+        "time": "오후 4:30",
+        "location": "DevOps 구역",
+        "task": "모델 배포 및 운영"
+      },
+      "quests": [
+        {
+          "id": "q4-1",
+          "type": "deployment",
+          "title": "배포 전략 수립",
+          "description": "프로덕션 환경에 모델을 안전하게 배포하기 위한 전략을 세워보세요.",
+          "content": {
+            "situation": "모델 성능이 만족스럽습니다. 이제 실제 서비스에 적용해야 합니다.",
+            "currentService": {
+              "traffic": "일일 10만 건 리뷰 처리",
+              "availability": "99.9% SLA 요구",
+              "response_time": "< 200ms",
+              "existing_system": "규칙 기반 분류기"
+            },
+            "deploymentOptions": [
+              {
+                "strategy": "Big Bang (전체 교체)",
+                "risk": "높음",
+                "speed": "빠름",
+                "description": "기존 시스템을 완전히 새 모델로 교체"
+              },
+              {
+                "strategy": "Blue-Green",
+                "risk": "중간",
+                "speed": "중간",
+                "description": "새 환경을 구축 후 트래픽 전환"
+              },
+              {
+                "strategy": "Canary (점진적)",
+                "risk": "낮음", 
+                "speed": "느림",
+                "description": "5% → 25% → 100% 순차적 적용"
+              }
+            ],
+            "question": "어떤 배포 전략을 선택하시겠습니까?"
+          }
+        },
+        {
+          "id": "q4-2",
+          "type": "monitoring", 
+          "title": "모델 성능 모니터링",
+          "description": "배포 후 모델 성능을 실시간으로 모니터링하는 시스템을 설계해보세요.",
+          "content": {
+            "situation": "모델이 배포되었습니다. 이제 실시간으로 성능을 모니터링해야 합니다.",
+            "metrics": [
+              {
+                "category": "모델 성능",
+                "metrics": ["정확도", "응답시간", "처리량"],
+                "alerts": ["정확도 < 80%", "응답시간 > 300ms"]
+              },
+              {
+                "category": "데이터 드리프트",
+                "metrics": ["입력 분포 변화", "예측 분포 변화"],
+                "alerts": ["분포 변화 > 10%"]
+              },
+              {
+                "category": "시스템 안정성",
+                "metrics": ["에러율", "CPU/메모리 사용률"],
+                "alerts": ["에러율 > 1%", "리소스 사용률 > 80%"]
+              }
+            ],
+            "incident": {
+              "description": "배포 3일 후, 모델 정확도가 78%로 떨어졌습니다.",
+              "possibleCauses": [
+                "새로운 제품 카테고리 추가로 인한 데이터 분포 변화",
+                "계절적 언어 패턴 변화 (할인 시즌)",
+                "모델 버그 또는 인프라 문제"
+              ],
+              "actions": [
+                "즉시 롤백",
+                "원인 분석 후 모델 재학습",
+                "A/B 테스트로 점진적 개선"
+              ]
+            }
+          }
+        },
+        {
+          "id": "q4-3",
+          "type": "business-impact",
+          "title": "비즈니스 임팩트 측정",
+          "description": "AI 모델 도입으로 인한 비즈니스 가치를 측정해보세요.",
+          "content": {
+            "situation": "모델이 한 달간 안정적으로 운영되었습니다. 비즈니스 임팩트를 보고해야 합니다.",
+            "beforeAfter": {
+              "before": {
+                "processing_time": "평균 3시간 (수작업)",
+                "accuracy": "70% (담당자 간 편차 존재)",
+                "cost": "월 300만원 (인건비)",
+                "coverage": "주요 리뷰만 분석 (20%)"
+              },
+              "after": {
+                "processing_time": "실시간 (< 1초)",
+                "accuracy": "86% (일관된 기준)",
+                "cost": "월 50만원 (서버 비용)",
+                "coverage": "전체 리뷰 분석 (100%)"
+              }
+            },
+            "businessMetrics": {
+              "cost_savings": "월 250만원 절약",
+              "efficiency_gain": "10800배 처리 속도 향상",
+              "quality_improvement": "16%p 정확도 향상",
+              "coverage_expansion": "5배 분석 범위 확장"
+            },
+            "customerImpact": {
+              "response_time": "고객 문의 응답 시간 50% 단축",
+              "satisfaction": "부정 리뷰 조기 발견으로 고객 만족도 개선",
+              "insights": "상품별 감정 트렌드 분석 가능"
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "chapter-5",
+      "title": "성과 평가 및 피드백",
+      "description": "프로젝트를 마무리하고 팀과 함께 성과를 평가해보세요.",
+      "duration": "8-10분",
+      "setting": {
+        "time": "오후 6:00",
+        "location": "회의실",
+        "task": "프로젝트 회고 및 평가"
+      },
+      "quests": [
+        {
+          "id": "q5-1",
+          "type": "retrospective",
+          "title": "프로젝트 회고",
+          "description": "팀과 함께 프로젝트를 돌아보며 잘한 점과 개선점을 정리해보세요.",
+          "content": {
+            "situation": "3주간의 프로젝트가 성공적으로 마무리되었습니다. 팀 회고 시간입니다.",
+            "categories": [
+              {
+                "category": "잘한 점 (What went well)",
+                "items": [
+                  "목표 성능 달성 (86% 정확도)",
+                  "일정 내 프로젝트 완료",
+                  "팀 간 원활한 소통",
+                  "체계적인 실험 설계"
+                ]
+              },
+              {
+                "category": "아쉬운 점 (What could be improved)",
+                "items": [
+                  "초기 데이터 분석에 더 많은 시간 투자 필요",
+                  "모델 해석가능성 고려 부족",
+                  "장기적 유지보수 계획 수립 필요"
+                ]
+              },
+              {
+                "category": "배운 점 (What we learned)",
+                "items": [
+                  "데이터 품질이 모델 성능에 미치는 영향",
+                  "점진적 배포의 중요성",
+                  "비즈니스 지표와 기술 지표의 균형"
+                ]
+              }
+            ],
+            "yourContribution": [
+              "데이터 전처리 파이프라인 구축",
+              "모델 성능 개선 아이디어 제안",
+              "배포 모니터링 시스템 설계 참여"
+            ],
+            "feedback": {
+              "fromTeamLead": "지민씨는 신입임에도 불구하고 체계적인 접근과 적극적인 질문으로 프로젝트에 크게 기여했습니다. 특히 데이터 품질 문제를 먼저 발견한 점이 인상적이었어요.",
+              "fromSenior": "기술적 호기심이 많고 빠르게 학습하는 모습이 좋았습니다. 다음에는 좀 더 큰 책임을 맡아도 될 것 같아요.",
+              "areas_for_growth": [
+                "도메인 지식 확장 (이커머스, 고객 분석)",
+                "MLOps 및 프로덕션 환경 이해",
+                "비즈니스 임팩트 측정 역량"
+              ]
+            }
+          }
+        },
+        {
+          "id": "q5-2",
+          "type": "career-reflection",
+          "title": "개인 성장 계획",
+          "description": "이번 프로젝트 경험을 바탕으로 향후 성장 계획을 세워보세요.",
+          "content": {
+            "skillsGained": [
+              {"skill": "데이터 전처리", "level": "중급", "growth": "+2"},
+              {"skill": "감정 분석 모델링", "level": "초급", "growth": "+3"},
+              {"skill": "모델 배포", "level": "입문", "growth": "+2"},
+              {"skill": "팀 협업", "level": "중급", "growth": "+1"},
+              {"skill": "프로젝트 관리", "level": "입문", "growth": "+2"}
+            ],
+            "nextSteps": [
+              {
+                "area": "기술 역량",
+                "goals": [
+                  "딥러닝 전문 과정 수강",
+                  "MLOps 도구 학습 (Kubeflow, MLflow)",
+                  "클라우드 서비스 활용 (AWS SageMaker)"
+                ]
+              },
+              {
+                "area": "비즈니스 이해",
+                "goals": [
+                  "도메인 전문성 개발",
+                  "데이터 사이언스 비즈니스 케이스 스터디",
+                  "고객 관점에서의 AI 서비스 기획"
+                ]
+              },
+              {
+                "area": "리더십",
+                "goals": [
+                  "주니어 멘토링 경험",
+                  "프로젝트 리드 역할 도전",
+                  "대외 발표 및 지식 공유"
+                ]
+              }
+            ],
+            "opportunities": [
+              "다음 분기 추천 시스템 프로젝트 참여",
+              "AI 컨퍼런스 발표 기회",
+              "사내 AI 스터디 그룹 리딩"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+
+  "scoringSystem": {
+    "totalPoints": 100,
+    "categories": [
+      {
+        "category": "기술적 역량",
+        "weight": 30,
+        "criteria": [
+          "데이터 분석 능력",
+          "모델 개발 이해도",
+          "문제 해결 접근법"
+        ]
+      },
+      {
+        "category": "협업 및 커뮤니케이션",
+        "weight": 25,
+        "criteria": [
+          "팀워크",
+          "질문 및 피드백 수용",
+          "아이디어 제안"
+        ]
+      },
+      {
+        "category": "비즈니스 이해",
+        "weight": 20,
+        "criteria": [
+          "목표 지향적 사고",
+          "비용 효율성 고려",
+          "고객 관점 이해"
+        ]
+      },
+      {
+        "category": "성장 마인드셋",
+        "weight": 15,
+        "criteria": [
+          "학습 의지",
+          "도전 정신",
+          "자기 성찰"
+        ]
+      },
+      {
+        "category": "실행력",
+        "weight": 10,
+        "criteria": [
+          "업무 완수",
+          "시간 관리",
+          "품질 관리"
+        ]
+      }
+    ],
+    "grades": [
+      {"grade": "A+", "range": [90, 100], "message": "뛰어난 AI 개발자 역량을 보여주었습니다!"},
+      {"grade": "A", "range": [80, 89], "message": "우수한 성과입니다. AI 개발자로서 큰 잠재력이 있습니다."},
+      {"grade": "B+", "range": [70, 79], "message": "좋은 성과입니다. 몇 가지 영역에서 더 성장할 수 있습니다."},
+      {"grade": "B", "range": [60, 69], "message": "평균적인 성과입니다. 기초를 더 다져보세요."},
+      {"grade": "C", "range": [50, 59], "message": "아쉬운 성과입니다. 추가 학습이 필요합니다."}
+    ]
+  },
+
+  "resources": {
+    "assets": {
+      "backgrounds": [
+        "startup-office-wide.jpg",
+        "meeting-room-modern.jpg", 
+        "dev-desk-setup.jpg",
+        "server-room.jpg",
+        "coffee-break-area.jpg"
+      ],
+      "characters": [
+        "team-leader-park-full.png",
+        "senior-lee-full.png",
+        "senior-jung-full.png", 
+        "junior-choi-full.png",
+        "player-avatar-customizable.png"
+      ],
+      "ui_elements": [
+        "code-editor-interface.png",
+        "data-visualization-charts.png",
+        "model-performance-dashboard.png",
+        "deployment-pipeline.png",
+        "monitoring-alerts.png"
+      ],
+      "sounds": [
+        "office-ambiance-loop.mp3",
+        "keyboard-typing-soft.mp3",
+        "mouse-click.mp3",
+        "notification-ping.mp3",
+        "success-chime.mp3",
+        "error-buzz.mp3",
+        "meeting-discussion-mumble.mp3",
+        "coffee-machine.mp3"
+      ],
+      "music": [
+        "focus-work-background.mp3",
+        "collaboration-upbeat.mp3",
+        "problem-solving-tense.mp3",
+        "success-celebration.mp3"
+      ]
+    },
+    "external_services": {
+      "code_execution": "CodePen Embed for Python snippets",
+      "data_visualization": "Observable notebooks for interactive charts",
+      "documentation": "Links to real TensorFlow, scikit-learn docs",
+      "storage": "AWS S3 for asset hosting"
+    }
+  },
+
+  "variations": {
+    "difficulty_levels": [
+      {
+        "level": "beginner",
+        "changes": {
+          "more_hints": true,
+          "simplified_code": true,
+          "guided_decisions": true,
+          "extended_time": true
+        }
+      },
+      {
+        "level": "advanced", 
+        "changes": {
+          "complex_scenarios": true,
+          "open_ended_problems": true,
+          "time_pressure": true,
+          "multiple_solutions": true
+        }
+      }
+    ],
+    "role_focus": [
+      {
+        "focus": "technical_depth",
+        "emphasize": ["coding", "algorithm_design", "performance_optimization"]
+      },
+      {
+        "focus": "business_oriented",
+        "emphasize": ["stakeholder_communication", "roi_analysis", "product_impact"]
+      },
+      {
+        "focus": "research_oriented", 
+        "emphasize": ["experimentation", "paper_review", "novel_approaches"]
+      }
+    ]
+  },
+
+  "follow_up_scenarios": [
+    {
+      "title": "고급 딥러닝 프로젝트",
+      "description": "컴퓨터 비전을 활용한 제품 이미지 분석 시스템 개발",
+      "unlock_condition": "현재 시나리오에서 B+ 이상 달성"
+    },
+    {
+      "title": "MLOps 엔지니어 체험",
+      "description": "대규모 ML 파이프라인 구축 및 운영 경험",
+      "unlock_condition": "배포 관련 퀘스트에서 높은 점수 달성"
+    },
+    {
+      "title": "AI 연구원 시뮬레이션",
+      "description": "논문 리뷰부터 새로운 알고리즘 개발까지",
+      "unlock_condition": "기술적 창의성에서 높은 평가 받기"
+    }
+  ],
+
+  "metadata": {
+    "version": "1.0.0",
+    "created_date": "2025-01-01",
+    "last_updated": "2025-01-01",
+    "content_rating": "전체 이용가",
+    "estimated_play_time": "45-60분",
+    "replay_value": "높음 (다양한 선택지와 결과)",
+    "educational_value": "AI 개발 실무 이해도 80% 향상",
+    "target_audience": "AI/개발 분야 진로 관심자, 컴공/데이터사이언스 전공자"
+  }
+}
